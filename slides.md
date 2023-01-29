@@ -1,5 +1,8 @@
 ---
 marp: true
+paginate: true
+theme: default
+backgroundColor: #e6e6e6
 ---
 
 ![bg left:40% 80%](images/python.png)
@@ -12,7 +15,7 @@ marp: true
  
 - Use the right tools - Python is `batteries included`
 - Virtualise the environment
-- Structure the project - properly and consistently
+- Structure the project - be consistent
 - Test your code
 - Use a code coverage tool
 - Lint your code - not necessarily the tests
@@ -21,12 +24,12 @@ marp: true
 
 # Use the right tools
 
-- `pyenv` - for Python and dependency versioning
+- `pyenv` - for Python language and dependency versioning
 - `venv` - the Python virtual environment
 - `pip` - the Python package manager
 - `unittest` - the test module that's included in the Python standard library
 - `coverage` - a code coverage tool
-- `pylint` - your code should conform to [PEP-8 - the Python Style Guide](https://peps.python.org/pep-0008) - this helps you keep it that way
+- `pylint` - your code should conform to [PEP-8 - the Python Style Guide](https://peps.python.org/pep-0008)
 
 ---
 
@@ -36,24 +39,6 @@ marp: true
 $ cd ~
 $ git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 ```
-### For `bash`
-
-```shell
-$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-$ echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-$ cat .bashrc
-```
-
-```shell
-$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
-$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
-$ echo 'eval "$(pyenv init -)"' >> ~/.profile
-$ cat .profile
-```
----
-
-# Getting setup
 
 ### For `zsh`
 
@@ -61,15 +46,39 @@ $ cat .profile
 $ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 $ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
 $ echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+
+$ cat .zshrc
+
+$ exec "$SHELL"
 ```
 
 ---
 
 # Getting setup
 
-```shell
-$ exec "$SHELL"
+### For `bash`
 
+```shell
+$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+$ echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+$ cat .bashrc
+
+$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
+$ echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
+$ echo 'eval "$(pyenv init -)"' >> ~/.profile
+
+$ cat .profile
+
+$ exec "$SHELL"
+```
+
+---
+
+# Install Python
+
+```shell
 $ pyenv install 3.11.1
 $ pyenv global 3.11.1
 $ pyenv versions
@@ -79,27 +88,32 @@ $ python --version
 
 ---
 
-# Creating a project
+# Create a project structure
 
-$ mkdir <path_to_source_code>/python-workshop
-$ cd <path_to_source_code>/python-workshop 
+```shell
+$ cd <path_to_your_source_code>
+
+$ mkdir python-workshop
+$ cd python-workshop 
+
 $ pyenv local 3.11.1 # creates a `.python-version` file
 $ python rehash
 
 $ touch requirements.txt
 $ mkdir src 
 $ mkdir test
+```
 
 ---
 
-# Virtual Environment
+# Create a Virtual Environment
 
 ```shell
 $ python -m venv venv
 $ source venv/bin/activate
 ```
 
-### To `deactivate` 
+### To `deactivate` the environment 
 
 ```shell
 (venv) $ deactivate
@@ -107,17 +121,21 @@ $ source venv/bin/activate
 
 ---
 
-# Add your dependencies
+# Add your project dependencies
 
+```shell
 (venv) $ echo 'coverage' >> requirements.txt 
 (venv) $ echo 'pylint' >> requirements.txt
 (venv) $ pip install -r requirements.txt
+```
 
 ---
 
 ![bg left:40% 80%](images/code.png)
 
 # Time for some code
+
+### We're going to go TDD...
 
 ---
 
@@ -141,7 +159,7 @@ class TestStringUtils(unittest.TestCase):
 (venv) $ python -m unittest discover
 ```
 
-You sould get some errors.
+You sould get some errors telling you the thing you're trying to test doesn't exist yet.
 
 --- 
 
@@ -151,8 +169,6 @@ You sould get some errors.
 def count(string):
   return len(string)
 ```
-
-This is the code the tests are looking for!
 
 ---
 
@@ -172,7 +188,7 @@ Ran 0 tests in 0.000s
 OK
 ```
 
-What?
+### What?
 
 ---
 
@@ -184,7 +200,7 @@ We ran...
 (venv) $ python -m unittest discover
 ```
 
-The discover option on the end of that command means we need to tell Python where to find stuff.
+The `discover` option in that command means we need to tell Python where to find stuff - our tests in this case.
 
 To do that we need to create an empty file named `__init__.py` (that's double underscore either side of init).
 
@@ -205,7 +221,11 @@ Ran 1 test in 0.000s
 OK
 ```
 
-SUCCESS!
+### SUCCESS!
+
+---
+
+# Ok? We can add more code
 
 ---
 
@@ -247,11 +267,11 @@ Ran 2 tests in 0.001s
 FAILED (errors=1)
 ```
 
-It's trying to tell us that it can't find the `contains` method.
+It's trying to tell us that it can't find the `contains` method. We forgot to tell it!
 
 ---
 
-# So, we'll tell it where to find it 
+# Let's do that then
 
 Update `test/test_string_utils.py`...
 
@@ -259,6 +279,7 @@ Update `test/test_string_utils.py`...
 ```python
 from src.string_utils import count, contains
 ```
+You can use a splat (*) operator instead of listing the methods, but I'm going to suggest you don't. Turns out listing the methods is useful when refactoring things.
 
 Now that's fixed we can try again...
 
@@ -266,9 +287,11 @@ Now that's fixed we can try again...
 (venv) $ python -m unittest discover 
 ```
 
+We should get two passing tests now.
+
 ---
 
-# It'd be nice about now to see how much code coverage we have
+# Be nice to see how much code our tests cover
 
 ```shell 
 (venv) $ coverage run -m unittest discover
@@ -279,38 +302,44 @@ Ran 2 tests in 0.001s
 OK
 ```
 
-Uh! That it?
+### Uh! Looks like it did something, is that it?
 
 ---
 
 # Turns out coverage needs two commands
 
-One to produce the data, and one to produce the report. I know, don't blame me!!!
+One to produce the data, and one to produce the report.
+
+So, we really want this...
 
 ```shell
-(venv) $ coverage report -m
+(venv) $ coverage run -m unittest discover && coverage report -m
 ```
+
+I know, don't blame me!!!
 
 ---
 
-# As for linting
+# What about linting our code?
 
 
 ```shell 
 (venv) $ pylint --recursive=y ./src ./test
 ```
 
-And you should see a bunch of warnings and errors with references which bit of the code to fix.
+And you should see a bunch of warnings and errors with references telling you what to fix and where.
 
-But, I know what you're thinking - an we auto fix these issues right?
+But, I know what you're thinking - can we auto fix these issues?
 
 Kinda... partly, yes...
 
 ---
 
-# But, we need another tool
+# We need another tool for that
 
-Remember PEP-8? Here's a tool that make sure your code complies to PEP-8.
+Remember PEP-8? 
+
+Here's a tool that makes the bits of your code that it can - comply with PEP-8.
 
 ```shell
 (venv) $ echo 'autopep8' >> requirements.txt
@@ -327,13 +356,9 @@ So, what did it fix?
 
 ---
 
-# Now, I don't know about you...
+# About now, my fingers are getting tired of typing those long commands...
 
-I find these commands a tad ... spammy. 
-
-But, we can fix that. 
-
-How about some `aliases`?
+But, we can fix that. We could write a CLI, or we could just add some `aliases`?
 
 ```shell
 alias py-up='source venv/bin/activate'
@@ -344,12 +369,124 @@ alias py-cov='coverage run -m unittest discover && coverage report -m'
 alias py-cop='pylint --recursive=y ./src ./test'
 ```
 
-Add these to your `.bashrc` or `.zshrc` file and relax.
+Add these to your `.bashrc` or `.zshrc` file, reload your shell and relax.
 
 ---
 
-# TODO
+# Debugging Python with `pdb`
 
-Add section on py debugger
-Add API mock example
-Add exercise
+But, before we debug anything, how can we use the Python REPL to run our code...? 
+
+```shell
+(env) $ python
+>>> from src.string_utils import count, contains
+>>> count("Hello World")
+11
+>>> contains('Spam', "What a wonderful thing Python is")
+False
+>>> contains('Spam', "What a wonderful thing Spam is")
+True
+>>> exit()
+```
+
+---
+
+# Now we can debug
+
+```shell
+(env) $ python
+```
+
+```python
+>>> import pdb
+>>> from src.string_utils import count, contains
+>>> pdb.run('count("Hello World")')
+> <string>(1)<module>()
+(Pdb) h # help
+(Pdb) s # step into function
+(Pdb) l # list the source code
+(Pdb) a # show argument value(s)
+(Pdb) p arg # print the value of the a parameter
+(Pdb) r # run the code at this point
+(Pdb) c # continue to next breakpoint
+(Pdb) n # continue to next line
+(Pdb) q # quit the debugger
+>>> exit()
+```
+
+---
+
+# More ways to envoke `pdb`
+
+- Invoke as a script to debug scripts `python3 -m pdb some_script.py`
+
+- Add `import pdb; pdb.set_trace()` to your source code at a specific point to interactivaly drop you into `pdb`
+
+---
+
+# Envoking `pdb` in your source code
+
+Update your source code...
+
+```python
+def count(string):
+    import pdb
+    pdb.set_trace()
+    return len(string)
+```
+
+Start the REPL...
+
+```shell
+(env) $ python
+```
+
+Run the code...
+
+```python
+>>> import pdb
+>>> from src.string_utils import count, contains
+>>> count("Hello World")
+```
+
+---
+
+# Need more on `pdb`?
+
+Complete reference at [https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)
+
+
+Like most debuggers... `pdb` is not the easiest of tools to use, but is extremely powerful and useful.
+
+---
+
+# Exercise
+
+Write a function that:
+
+- takes a string
+- splits that string - by space - into an array
+- removes duplicate values
+- orders the array alphabetically
+
+Test your code. TDD for bonus points!
+
+So, given `my_function("Lovely Spam Wonderful Spam Lovely Spam Wonderful Spam Spam Spam Spam Spam Lovely Spam Lovely Spam Lovely Spam Spam Spam Spam Spam")`
+
+Your function should return `['Lovely', 'Spam', 'Wonderful']`
+
+---
+
+# Getting `line too long` linter errors?
+
+Get `pylint` to ignore the error by adding this directly above the line in question...
+
+```python
+# pylint: disable=line-too-long
+```
+
+---
+
+![bg left:40% 80%](images/python.png)
+
+# That's all folks!

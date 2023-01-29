@@ -14,3 +14,13 @@ def contains(text, string):
     otherwise returns false.
     """
     return text in string
+
+def sanitize(string):
+    """
+    A function that:
+        - takes a string
+        - splits that string - by space - into an array
+        - removes duplicate values
+        - orders the array alphabetically
+    """
+    return list(dict.fromkeys(sorted(string.split(" "))))
