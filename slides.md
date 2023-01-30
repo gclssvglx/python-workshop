@@ -12,7 +12,7 @@ backgroundColor: #e6e6e6
 ---
 
 # What I learned by adding tests to `search-analytics`
- 
+
 - Use the right tools - Python is `batteries included`
 - Virtualise the environment
 - Structure the project - be consistent
@@ -94,13 +94,13 @@ $ python --version
 $ cd <path_to_your_source_code>
 
 $ mkdir python-workshop
-$ cd python-workshop 
+$ cd python-workshop
 
 $ pyenv local 3.11.1 # creates a `.python-version` file
 $ python rehash
 
 $ touch requirements.txt
-$ mkdir src 
+$ mkdir src
 $ mkdir test
 ```
 
@@ -113,7 +113,7 @@ $ python -m venv venv
 $ source venv/bin/activate
 ```
 
-### To `deactivate` the environment 
+### To `deactivate` the environment
 
 ```shell
 (venv) $ deactivate
@@ -124,7 +124,7 @@ $ source venv/bin/activate
 # Add your project dependencies
 
 ```shell
-(venv) $ echo 'coverage' >> requirements.txt 
+(venv) $ echo 'coverage' >> requirements.txt
 (venv) $ echo 'pylint' >> requirements.txt
 (venv) $ pip install -r requirements.txt
 ```
@@ -161,7 +161,7 @@ class TestStringUtils(unittest.TestCase):
 
 You sould get some errors telling you the thing you're trying to test doesn't exist yet.
 
---- 
+---
 
 # src/string_utils.py
 
@@ -180,7 +180,7 @@ def count(string):
 
 AND... Nothing!
 
-```shell 
+```shell
 
 ----------------------------------------------------------------------
 Ran 0 tests in 0.000s
@@ -235,7 +235,7 @@ OK
 
   def test_contains(self):
     self.assertEqual(contains("Monty", "Monty Python and the Holy Grail"), True)
-    self.assertEqual(contains("Monty", "Star Wars"), False) 
+    self.assertEqual(contains("Monty", "Star Wars"), False)
 ```
 
 # src/string_utils.py
@@ -250,7 +250,7 @@ def contains(text, string):
 # And test...
 
 ```shell
-(venv) $ python -m unittest discover 
+(venv) $ python -m unittest discover
 E.
 ======================================================================
 ERROR: test_contains (test.test_string_utils.TestStringUtils.test_contains)
@@ -284,7 +284,7 @@ You can use a splat (*) operator instead of listing the methods, but I'm going t
 Now that's fixed we can try again...
 
 ```shell
-(venv) $ python -m unittest discover 
+(venv) $ python -m unittest discover
 ```
 
 We should get two passing tests now.
@@ -293,7 +293,7 @@ We should get two passing tests now.
 
 # Be nice to see how much code our tests cover
 
-```shell 
+```shell
 (venv) $ coverage run -m unittest discover
 ..
 ----------------------------------------------------------------------
@@ -323,7 +323,7 @@ I know, don't blame me!!!
 # What about linting our code?
 
 
-```shell 
+```shell
 (venv) $ pylint --recursive=y ./src ./test
 ```
 
@@ -337,7 +337,7 @@ Kinda... partly, yes...
 
 # We need another tool for that
 
-Remember PEP-8? 
+Remember PEP-8?
 
 Here's a tool that makes the bits of your code that it can - comply with PEP-8.
 
@@ -375,7 +375,7 @@ Add these to your `.bashrc` or `.zshrc` file, reload your shell and relax.
 
 # Debugging Python with `pdb`
 
-But, before we debug anything, how can we use the Python REPL to run our code...? 
+But, before we debug anything, how can we use the Python REPL to run our code...?
 
 ```shell
 (env) $ python
