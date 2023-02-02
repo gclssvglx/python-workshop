@@ -418,7 +418,7 @@ True
 
 # More ways to envoke `pdb`
 
-- Invoke as a script to debug scripts `python3 -m pdb some_script.py`
+- Invoke as a script to debug scripts `python -m pdb some_script.py`
 
 - Add `import pdb; pdb.set_trace()` to your source code at a specific point to interactivaly drop you into `pdb`
 
