@@ -13,12 +13,12 @@ backgroundColor: #e6e6e6
 
 # What I learned by adding tests to `search-analytics`
 
-- Use the right tools - Python is `batteries included`
+- Use the right tools
 - Virtualise the environment
-- Structure the project - be consistent
+- Structure the project
 - Test your code
 - Use a code coverage tool
-- Lint your code - not necessarily the tests
+- Lint your code - including the tests
 
 ---
 
@@ -49,7 +49,7 @@ $ echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 
 $ cat .zshrc
 
-$ exec "$SHELL"
+$ source ~/.zshrc
 ```
 
 ---
@@ -71,7 +71,7 @@ $ echo 'eval "$(pyenv init -)"' >> ~/.profile
 
 $ cat .profile
 
-$ exec "$SHELL"
+$ source ~/.bashrc
 ```
 
 ---
@@ -135,8 +135,6 @@ $ source venv/bin/activate
 
 # Time for some code
 
-### We're going to go TDD...
-
 ---
 
 # test/test_string_utils.py
@@ -188,8 +186,6 @@ Ran 0 tests in 0.000s
 OK
 ```
 
-### What?
-
 ---
 
 # Can you `discover` the clue?
@@ -200,7 +196,7 @@ We ran...
 (venv) $ python -m unittest discover
 ```
 
-The `discover` option in that command means we need to tell Python where to find stuff - our tests in this case.
+The `discover` option in that command means we need to tell Python that we are creating a module.
 
 To do that we need to create an empty file named `__init__.py` (that's double underscore either side of init).
 
@@ -225,7 +221,7 @@ OK
 
 ---
 
-# Ok? We can add more code
+# Ok? More code...
 
 ---
 
@@ -271,9 +267,9 @@ It's trying to tell us that it can't find the `contains` method. We forgot to te
 
 ---
 
-# Let's do that then
+# Let's do that
 
-Update `test/test_string_utils.py`...
+Update `test/test_string_utils.py` and add `contains`
 
 
 ```python
@@ -302,7 +298,7 @@ Ran 2 tests in 0.001s
 OK
 ```
 
-### Uh! Looks like it did something, is that it?
+### Looks like it did something, but where's the report?
 
 ---
 
@@ -316,8 +312,6 @@ So, we really want this...
 (venv) $ coverage run -m unittest discover && coverage report -m
 ```
 
-I know, don't blame me!!!
-
 ---
 
 # What about linting our code?
@@ -327,11 +321,9 @@ I know, don't blame me!!!
 (venv) $ pylint --recursive=y ./src ./test
 ```
 
-And you should see a bunch of warnings and errors with references telling you what to fix and where.
+You should see a bunch of warnings and errors with references telling you what to fix and where.
 
 But, I know what you're thinking - can we auto fix these issues?
-
-Kinda... partly, yes...
 
 ---
 
@@ -358,7 +350,7 @@ So, what did it fix?
 
 # About now, my fingers are getting tired of typing those long commands...
 
-But, we can fix that. We could write a CLI, or we could just add some `aliases`?
+But, we can fix that. We could write a CLI, but for now let's just add some `aliases`?
 
 ```shell
 alias py-up='source venv/bin/activate'
@@ -418,7 +410,7 @@ True
 
 # More ways to envoke `pdb`
 
-- Invoke as a script to debug scripts `python -m pdb some_script.py`
+- Invoke as a script - to debug scripts `python -m pdb some_script.py`
 
 - Add `import pdb; pdb.set_trace()` to your source code at a specific point to interactivaly drop you into `pdb`
 
@@ -451,12 +443,12 @@ Run the code...
 
 ---
 
-# Need more on `pdb`?
+# Need more `pdb`?
 
 Complete reference at [https://docs.python.org/3/library/pdb.html](https://docs.python.org/3/library/pdb.html)
 
 
-Like most debuggers... `pdb` is not the easiest of tools to use, but is extremely powerful and useful.
+Like most debuggers... `pdb` is not the easiest of tools to use, but is extremely powerful and useful when you need it.
 
 ---
 
@@ -469,7 +461,7 @@ Write a function that:
 - removes duplicate values
 - orders the array alphabetically
 
-Test your code. TDD for bonus points!
+Test your code. Do it TDD for bonus points!
 
 So, given `my_function("Lovely Spam Wonderful Spam Lovely Spam Wonderful Spam Spam Spam Spam Spam Lovely Spam Lovely Spam Lovely Spam Spam Spam Spam Spam")`
 
@@ -477,7 +469,7 @@ Your function should return `['Lovely', 'Spam', 'Wonderful']`
 
 ---
 
-# Getting `line too long` linter errors?
+# Are you getting `line too long` linter errors?
 
 Get `pylint` to ignore the error by adding this directly above the line in question...
 
